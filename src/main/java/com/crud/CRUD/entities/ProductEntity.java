@@ -9,14 +9,23 @@ public class ProductEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String descrition;
+    private String description;
+    private Long price;
 
-    public String getDescrition() {
-        return descrition;
+    public Long getPrice() {
+        return price;
     }
 
-    public void setDescrition(String descrition) {
-        this.descrition = descrition;
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
+    public String getDescription() {
+        return  description;
+    }
+
+    public void setDescription(String description) {
+        this. description = description;
     }
 
     public Long getId() {
@@ -38,7 +47,7 @@ public class ProductEntity {
     @Override
     public String toString() {
         return "ProductEntity{" +
-                "descrition='" + descrition + '\'' +
+                "description='" +  description + '\'' +
                 ", id=" + id +
                 ", name='" + name + '\'' +
                 '}';
