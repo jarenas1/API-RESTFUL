@@ -15,5 +15,8 @@ public interface ProductService {
 
     ProductEntity save(ProductEntity productEntity);
 
-    Optional<ProductEntity> delete(ProductEntity productEntity);
+    Optional<ProductEntity> delete(Long id);
+
+    Optional<ProductEntity> update(ProductEntity productEntity);
+
 }
