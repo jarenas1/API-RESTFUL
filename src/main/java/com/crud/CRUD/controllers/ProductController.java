@@ -6,9 +6,12 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -31,15 +34,31 @@ public class ProductController {
     }
 
     @PostMapping
-    public  ResponseEntity<ProductEntity> create (@Valid @RequestBody ProductEntity productEntity){
+    public  ResponseEntity<?> create (@Valid @RequestBody ProductEntity productEntity, BindingResult result){
+        if(result.hasFieldErrors()){
+            return validation(result);
+        }
         ProductEntity product = service.save(productEntity);
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
 
+    private ResponseEntity<?> validation(BindingResult result) {
+        //CREACION DEL ERROR
+        Map<String, String> errors = new HashMap<>();
+        //Iteramos errores para añadirlos al map
+        result.getFieldErrors().forEach(fieldError -> {
+            errors.put(fieldError.getField(), "El campo "+fieldError.getField()+" "+ fieldError.getDefaultMessage());
+        });
+        return ResponseEntity.badRequest().body(errors);
+    }
+
     //AÑADMOS VALID, EL CUAL PERMITE VALIDAR LOS CAMPOS QUE ESTAMOS ENVIANDO DESDE LA CLASE ENTITY
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ProductEntity> update ( @PathVariable Long id, @Valid @RequestBody  ProductEntity product){
+    @PutMapping("/{id}") //BINDINGRESULT SE PONE AL LADO DEL OBJETO QUE SE ESTA VALIDANDO, Y ESTE CONTIENE TODOS LOS ERRORES OBTENIDOS DE LAS VALIDACIONES
+    public ResponseEntity<?> update (@PathVariable Long id, @Valid @RequestBody  ProductEntity product, BindingResult result){
+        if(result.hasFieldErrors()){
+            return validation(result);
+        }
         Optional<ProductEntity> productEntityOptional = service.update(product);
         if (productEntityOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.CREATED).body(productEntityOptional.get());

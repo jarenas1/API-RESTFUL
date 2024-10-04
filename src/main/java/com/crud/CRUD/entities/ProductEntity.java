@@ -3,6 +3,7 @@ package com.crud.CRUD.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -13,8 +14,8 @@ public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank //Valida que no este vacio
+    //ESTE MENSAJE VIENE DE UN PROPERTIES Y SE PASA AL MAIN
+    @NotEmpty(message = "{NotEmpty.product.name}") //Valida que no este vacio
     @Size(min=3, max = 20) //MUY UTIL PARA USERNAMES Y ESO, Valida tamaño maximo y minimo
     private String name;
 
