@@ -60,14 +60,20 @@ public class SpringSecurityConfig {
                         //PSAMOS EL METODO Y LA RUTA
 //                        .requestMatchers("/api/users").permitAll()   SI NO PASAMOS METODO, COGERA TODOS LOS ENDPOINTS DE ESA RUTA
                         .requestMatchers(HttpMethod.GET,"/api/users").permitAll()
+                        .requestMatchers( "/v3/api-docs/**",      // Para OpenAPI 3.0
+                                "/swagger-ui/**",       // Swagger UI
+                                "/swagger-ui.html",     // Página principal de Swagger UI
+                                "/swagger-resources/**",
+                                "/webjars/**")
+                        .permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/users").permitAll()
                         .requestMatchers(HttpMethod.POST,"api/users/register").permitAll()
 //                        .requestMatchers(HttpMethod.POST,"api/users").hasRole("ADMIN") //ACCESIBLE SOLO SI TIENE EL ROL ADMIN
                         .requestMatchers(HttpMethod.POST,"api/products").hasRole("ADMIN") //SPRINGBOOT ELIMINA EL ROLE_
                 //TENDREMOS 2 ENDPOINTS, LISTAR Y VER POR ID, Y PONDREMOS ACCESIBLE POR VARIOS USUARIO
                         .requestMatchers(HttpMethod.GET,"api/products", "/api/products/{id}").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers(HttpMethod.DELETE,"api/products({id}").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT,"api/products({id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"api/products{id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT,"api/products{id}").hasRole("ADMIN")
                         .anyRequest().authenticated()) //resto de rutas privadas
                 .addFilter(new JwtAuthenticationFilter(authenticationManager())) //AÑADIMOS EL FILTRO CREADO ARRIBA PARA EL JWT
                 .addFilter(new JwtValidationFilter(authenticationManager())) //AÑADIMOS LA VALIDACION CREADA

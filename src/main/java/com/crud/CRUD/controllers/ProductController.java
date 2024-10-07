@@ -1,6 +1,7 @@
 package com.crud.CRUD.controllers;
 
 import com.crud.CRUD.entities.ProductEntity;
+import com.crud.CRUD.services.MailService;
 import com.crud.CRUD.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,10 @@ import java.util.Optional;
 public class ProductController {
     @Autowired
     private ProductService service;
+
+    //INYECTAMOS EL EMAIL
+    @Autowired
+    private MailService mailService;
 
     @GetMapping
     public List<ProductEntity> finAll(){
@@ -39,6 +44,8 @@ public class ProductController {
             return validation(result);
         }
         ProductEntity product = service.save(productEntity);
+        //ENVIAMOS EL EMAIL
+        mailService.email("juanjoarenas1218@gmail.com", "JUANITO JOSE ARENAS", "SE HA CREADO UN NUEVO PRODUCTO MI PA LLAMADO %s");
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
 
