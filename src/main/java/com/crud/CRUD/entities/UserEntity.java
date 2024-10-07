@@ -30,7 +30,7 @@ public class UserEntity {
 
     //GENERAMOS RELACION CON LOS RELACIONES
     @JsonIgnoreProperties({"users"}) //VA A EVITAR CICLOS INFINITOS, CUANDO ENCUENTRE LA LLAVE users, LA VA A IGNORAR
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"), //columna nuestra
@@ -49,6 +49,7 @@ public class UserEntity {
     public void prePersist(){
         this.enabled = true;
     }
+
     public Long getId() {
         return id;
     }

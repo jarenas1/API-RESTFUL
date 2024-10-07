@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+//IMPLEMENTACION DE LOS CORS
+@CrossOrigin(originPatterns = "*") //TODAS LAS RUTAS DE FRONT TIENEN ACCESO
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
