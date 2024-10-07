@@ -2,6 +2,8 @@ package com.crud.CRUD.controllers;
 
 import com.crud.CRUD.entities.UserEntity;
 import com.crud.CRUD.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,13 +17,28 @@ import java.util.Map;
 
 //IMPLEMENTACION DE LOS CORS
 @CrossOrigin(originPatterns = "*") //TODAS LAS RUTAS DE FRONT TIENEN ACCESO
+@Tag(
+        name = "Perritos guaugau",
+        description = "probando el swagger que estoy montando tan hp"
+
+)
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
     @Autowired
     private UserService userService;
 
+
     @GetMapping
+    @Operation(
+            summary="nombre",
+            description="description",
+            tags = {"palabraclave"} //lista de palabras claves
+//            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody( //!requesBody de swager,no sb(
+//                    description= "probando la documentacion de un endpint ",
+//                    required = true
+//            )
+    )
     public List<UserEntity> list(){
         return userService.findAll();
     }
